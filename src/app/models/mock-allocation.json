@@ -1,0 +1,30 @@
+[
+  {
+    "employeeId": 1,
+    "employeeName": "Dawud Mohammed Omar",
+    "projectType": "client",
+    "endDate": "2021-07-22",
+    "startDate": "2019-12-09"
+  },
+  {
+    "employeeId": 2,
+    "employeeName": "Justice Owusu Asare",
+    "projectType": "client",
+    "endDate": "2021-07-22",
+    "startDate": "2019-12-09"
+  },
+  {
+    "employeeId": 3,
+    "employeeName": "Joy Dzapazu Kwame",
+    "projectType": "client",
+    "endDate": "2021-07-22",
+    "startDate": "2019-12-09"
+  },
+  {
+    "employeeId": 4,
+    "employeeName": "Twumasi Emmanuel kofi",
+    "projectType": "client",
+    "endDate": "2021-07-22",
+    "startDate": "2019-12-09"
+  }
+]

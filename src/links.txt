@@ -1,0 +1,1 @@
+https://github.com/syncfusion/ej2-angular-ui-components/tree/master/components/gantt
