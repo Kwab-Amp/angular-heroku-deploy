@@ -1,56 +1,135 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MockAllocations} from "./models/mock-allocations";
+import * as moment from "moment";
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexPlotOptions,
+  ApexXAxis,
+  ApexFill,
+  ApexDataLabels,
+  ApexYAxis,
+  ApexGrid
+} from "ng-apexcharts";
 
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  fill: ApexFill;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  yaxis: ApexYAxis;
+  xaxis: ApexXAxis;
+  plotOptions: ApexPlotOptions;
+};
 
 @Component({
   selector: 'app-root',
-  template:  `<ejs-gantt id="ganttDefault" height="430px" [dataSource]="data" [taskFields]="taskSettings"></ejs-gantt>`,
+  templateUrl: './app.component.html',
+  styleUrls: ["./app.component.css"]
 })
+
+
+
 export class AppComponent implements OnInit {
   title = 'Syncfusion Gantt Chart';
 
-  public data!: Object[];
-  public taskSettings!: object
-  ngOnInit(): void {
-    console.log(this.title, "Test")
-    this.getData();
+  @ViewChild("chart") chart!: ChartComponent;
+
+  public chartOptions: Partial<ChartOptions> | any;
+
+  constructor() {
+    this.chartOptions = {
+      series: [
+        {
+          data: [
+            {
+              x: "Settlements",
+              y: [
+                new Date("2019-02-27").getTime(),
+                new Date("2019-03-04").getTime()
+              ],
+              fillColor: "#008FFB"
+            },
+            {
+              x: "API Explorer",
+              y: [
+                new Date("2019-03-04").getTime(),
+                new Date("2019-03-08").getTime()
+              ],
+              fillColor: "#00E396"
+            },
+            {
+              x: "RICE",
+              y: [
+                new Date("2019-03-07").getTime(),
+                new Date("2019-03-10").getTime()
+              ],
+              fillColor: "#775DD0"
+            },
+            {
+              x: "Fidelity Mobile",
+              y: [
+                new Date("2019-03-08").getTime(),
+                new Date("2019-03-12").getTime()
+              ],
+              fillColor: "#FEB019"
+            },
+            {
+              x: "Optimus Compiler",
+              y: [
+                new Date("2019-03-12").getTime(),
+                new Date("2019-03-17").getTime()
+              ],
+              fillColor: "#FF4560"
+            }
+          ]
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "rangeBar"
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          distributed: true,
+          dataLabels: {
+            hideOverflowingLabels: false
+          }
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function(val:any, opts: any) {
+          var label = opts.w.globals.labels[opts.dataPointIndex];
+          var a = moment(val[0]);
+          var b = moment(val[1]);
+          var diff = b.diff(a, "days");
+          return label + ": " + diff + (diff > 1 ? " days" : " day");
+        },
+        style: {
+          colors: ["#f3f4f5", "#fff"]
+        }
+      },
+      xaxis: {
+        type: "datetime"
+      },
+      yaxis: {
+        show: false
+      },
+      grid: {
+        row: {
+          colors: ["#f3f4f5", "#fff"],
+          opacity: 1
+        }
+      }
+    };
   }
 
-  getData(): void {
-    this.taskSettings = {
-      id: 'TaskID',
-      name: 'TaskName',
-      startDate: 'StartDate',
-      endDate: 'EndDate',
-      duration: 'Duration',
-      progress: 'Progress',
-      dependency: 'Predecessor',
-      child: 'subtasks'
-    };
-    this.data = [
-      {
-        TaskID: 1,
-        TaskName: 'Project Initiation',
-        StartDate: new Date('04/02/2019'),
-        EndDate: new Date('04/21/2019'),
-        subtasks: [
-          {  TaskID: 2, TaskName: 'Identify Site location', StartDate: new Date('04/02/2019'), Duration: 4, Progress: 50 },
-          { TaskID: 3, TaskName: 'Perform Soil test', StartDate: new Date('04/02/2019'), Predecessor: 'Morgan Stanley', Duration: 4, Progress: 50  },
-          { TaskID: 4, TaskName: 'Soil test approval', StartDate: new Date('04/02/2019'),Predecessor: 'Morgan Stanley', Duration: 4, Progress: 50 },
-        ]
-      },
-      {
-        TaskID: 5,
-        TaskName: 'Project Estimation',
-        StartDate: new Date('04/02/2019'),
-        EndDate: new Date('04/21/2019'),
-        subtasks: [
-          { TaskID: 6, TaskName: 'Develop floor plan for estimation', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
-          { TaskID: 7, TaskName: 'List materials', StartDate: new Date('04/04/2019'), Duration: 3, Progress: 50 },
-          { TaskID: 8, TaskName: 'Estimation approval', StartDate: new Date('04/04/2019'),  Duration: 3, Progress: 50 }
-        ]
-      },
-    ];
+  ngOnInit() {
+    console.log(this.title)
   }
 
 }
